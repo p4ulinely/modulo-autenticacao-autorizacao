@@ -1,4 +1,4 @@
 News app with authentication
-	-Express
-	-MongoDB
-	-React
+	- Express
+	- MongoDB
+	- React
