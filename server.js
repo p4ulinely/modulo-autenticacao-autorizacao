@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
-const loginBD = require('./loginDb');
+const loginBD = require('./src/loginDb');
+// require("dotenv-safe").config({path: __dirname + '/.env'});
+require("dotenv-safe").config();
 
 //iniciando app
 const app = express();
@@ -13,8 +15,8 @@ mongoose.connect(`mongodb+srv://${loginBD.usuario}:${loginBD.senha}@cluster-mong
 }).then(() => {
 	console.log('MongoDB is on!');
 
-}).catch((err) => {
-	console.log(`MongoDB/Erro: ${err}`);
+}).catch(err => {
+	console.log(`MongoDB: ${err}`);
 })
 mongoose.set('useFindAndModify', true);
 mongoose.set('useUnifiedTopology', true);
@@ -22,12 +24,16 @@ mongoose.set('useUnifiedTopology', true);
 //carregando todos os models
 requireDir('./src/models');
 
-//rotas
+//carregando controllers
+const LoginController = require('./src/controllers/LoginController');
+
+//rotas app
 app.get('/', (req, res) => {
 	res.send("<p align='center'><a href='/api'>API news</a></p>");
 });
+app.post('/login', LoginController.index);
 
-//rotas
+//rotas da api
 app.use('/api', require('./src/routes'));
 
 //porta

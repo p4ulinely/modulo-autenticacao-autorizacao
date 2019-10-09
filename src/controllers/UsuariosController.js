@@ -9,7 +9,10 @@ module.exports = {
 				dia: -1
 			});
 
-			return res.json(usuarios);
+			return res.json({
+				id_req: req.userId,
+				dados: usuarios
+			});
 		} catch(err) {
 			return res.status(400).json({
 				msg: err
