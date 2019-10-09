@@ -10,7 +10,6 @@ module.exports = {
 			});
 
 			return res.json({
-				id_req: req.userId,
 				dados: usuarios
 			});
 		} catch(err) {
@@ -71,13 +70,16 @@ module.exports = {
 	async update(req, res){
 		try {
 			const usuario = await Usuarios.findOneAndUpdate({
-				email: req.params.email }, {
+				email: req.params.email 
+			}, {
 				nome: req.body.nome,
 				sobreNome: req.body.sobreNome,
 				senha: req.body.senha
+			}, {
+				useFindAndModify: false
 			});
-
-			res.json(usuario);
+			console.log(usuario);
+			return (usuario != null ? res.json(usuario) : res.status(400).json({msg: "usuario invalido"}));
 		} catch(err) {
 			return res.status(400).json({
 				msg: err

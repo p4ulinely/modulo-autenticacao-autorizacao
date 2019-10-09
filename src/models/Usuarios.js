@@ -13,6 +13,9 @@ const UsuariosSchema = new mongoose.Schema({
 	}, senha: {
 		type: String,
 		required: true
+	}, nivel: {
+		type: Number,
+		default: 1
 	}, createdAt: {
 		type: Date,
 		default: Date.now()

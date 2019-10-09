@@ -17,7 +17,8 @@ mongoose.connect(`mongodb+srv://${loginBD.usuario}:${loginBD.senha}@cluster-mong
 
 }).catch(err => {
 	console.log(`MongoDB: ${err}`);
-})
+});
+
 mongoose.set('useFindAndModify', true);
 mongoose.set('useUnifiedTopology', true);
 
