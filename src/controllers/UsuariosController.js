@@ -55,6 +55,10 @@ module.exports = {
 	},
 	async show(req, res){
 		try {
+
+			//caso o usuario autenticado tente ver outro usuario
+			if (req.params.email != req.usuarioAutenticado.email) return res.status(400).json({erros: "falha na credencial"});
+
 			const usuario = await Usuarios.find({
 				email: req.params.email
 			});
