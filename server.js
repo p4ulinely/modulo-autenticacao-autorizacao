@@ -30,7 +30,7 @@ const LoginController = require('./src/controllers/LoginController');
 
 //rotas app
 app.get('/', (req, res) => {
-	res.send("<p align='center'><a href='/api'>API news</a></p>");
+	res.send("<p align='center'>Node API</p>");
 });
 app.post('/login', LoginController.index);
 
