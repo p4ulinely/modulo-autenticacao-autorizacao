@@ -4,6 +4,10 @@ const Usuarios = mongoose.model('Usuarios');
 module.exports = {
 	async index(req, res){
 		try {
+
+			//caso o usuario autenticado nao seja admin
+			if (req.usuarioAutenticado.nivel < 2) return res.status(401).json({erros: "usuario sem permissao"});
+
 			const usuarios = await Usuarios.find().sort({
 				dia: -1
 			});
@@ -57,7 +61,7 @@ module.exports = {
 		try {
 
 			//caso o usuario autenticado tente ver outro usuario
-			if (req.params.email != req.usuarioAutenticado.email) return res.status(400).json({erros: "falha na credencial"});
+			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email) return res.status(401).json({erros: "falha na credencial"});
 
 			const usuario = await Usuarios.find({
 				email: req.params.email
@@ -74,7 +78,7 @@ module.exports = {
 		try {
 
 			//caso o usuario autenticado tente aletar outro usuario
-			if (req.params.email != req.usuarioAutenticado.email) return res.status(400).json({erros: "falha na credencial"});
+			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email) return res.status(401).json({erros: "falha na credencial"});
 
 			const usuario = await Usuarios.findOneAndUpdate({
 				email: req.params.email 
@@ -100,7 +104,7 @@ module.exports = {
 		try {
 
 			//caso o usuario autenticado tente remover outro usuario
-			if (req.params.email != req.usuarioAutenticado.email) return res.status(400).json({erros: "falha na credencial"});
+			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email) return res.status(401).json({erros: "falha na credencial"});
 
 			const remocao = await Usuarios.deleteMany({
 				email: req.params.email
