@@ -8,13 +8,22 @@ module.exports = {
 			//caso o usuario autenticado nao seja admin
 			if (req.usuarioAutenticado.nivel < 2) return res.status(401).json({erros: "usuario sem permissao"});
 
-			const usuarios = await Usuarios.find().sort({
-				dia: -1
-			});
+			// const usuarios = await Usuarios.find().sort({ createdAt: -1});
+
+			//desestrutura a variavel page das queries strings e adiciona o default como 1
+			const { page = 1 } = req.query;
+			
+			const usuarios = await Usuarios.paginate({}, {
+				page, // short sintaxe para page: page, 
+				limit: 10, 
+				sort: {
+					createdAt: -1
+				}});
 
 			return res.json({
 				dados: usuarios
 			});
+
 		} catch(err) {
 			return res.status(400).json({
 				msg: err
