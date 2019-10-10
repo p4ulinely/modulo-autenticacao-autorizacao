@@ -94,6 +94,10 @@ module.exports = {
 	},
 	async destroy(req, res){
 		try {
+
+			//caso o usuario autenticado tente remover outro usuario
+			if (req.params.email != req.usuarioAutenticado.email) return res.status(400).json({erros: "falha na credencial"});
+
 			const remocao = await Usuarios.deleteMany({
 				email: req.params.email
 			});
