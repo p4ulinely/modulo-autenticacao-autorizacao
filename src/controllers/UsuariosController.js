@@ -74,9 +74,11 @@ module.exports = {
 			}, {
 				nome: req.body.nome,
 				sobreNome: req.body.sobreNome,
-				senha: req.body.senha
+				senha: req.body.senha,
+				nivel: req.body.nivel
 			}, {
-				useFindAndModify: false
+				useFindAndModify: false,
+				new: true
 			});
 			console.log(usuario);
 			return (usuario != null ? res.json(usuario) : res.status(400).json({msg: "usuario invalido"}));
