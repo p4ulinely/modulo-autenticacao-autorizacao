@@ -22,8 +22,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/usuarios', verificarJWT, UsuariosController.index);
-router.get('/usuarios/:email', verificarJWT, UsuariosController.show);
-router.delete('/usuarios/:email', verificarJWT, UsuariosController.destroy);
+router.get('/usuarios/:email', UsuariosController.show);
+router.delete('/usuarios/:email', UsuariosController.destroy);
 router.put('/usuarios/:email', UsuariosController.update);
 router.post('/usuarios', UsuariosController.create);
 

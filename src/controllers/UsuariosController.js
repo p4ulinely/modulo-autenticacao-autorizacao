@@ -60,7 +60,7 @@ module.exports = {
 				email: req.params.email
 			});
 
-			return (usuario.length > 0 ? res.json(usuario) : res.status(400).json({msg: "usuario invalido"}))
+			return (usuario.length > 0 ? res.json(usuario) : res.status(400).json({erros: "usuario invalido"}));
 		} catch(err) {
 			return res.status(400).json({
 				msg: err
@@ -74,14 +74,15 @@ module.exports = {
 			}, {
 				nome: req.body.nome,
 				sobreNome: req.body.sobreNome,
+				email: req.body.email,
 				senha: req.body.senha,
 				nivel: req.body.nivel
 			}, {
 				useFindAndModify: false,
 				new: true
 			});
-			console.log(usuario);
-			return (usuario != null ? res.json(usuario) : res.status(400).json({msg: "usuario invalido"}));
+
+			return (usuario != null ? res.json(usuario) : res.status(400).json({erros: "usuario invalido"}));
 		} catch(err) {
 			return res.status(400).json({
 				msg: err
@@ -90,11 +91,11 @@ module.exports = {
 	},
 	async destroy(req, res){
 		try {
-			await Usuarios.deleteMany({
+			const remocao = await Usuarios.deleteMany({
 				email: req.params.email
-			})
+			});
 
-			return res.send();
+			return (remocao.deletedCount ? res.send() : res.status(400).json({erros: "usuario invalido"}));
 		} catch(err) {
 			return res.status(400).json({
 				msg: err
