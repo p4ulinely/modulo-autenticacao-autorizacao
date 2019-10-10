@@ -15,15 +15,13 @@ module.exports = {
 					expiresIn: 600 //10 minutos
 				});
 
-				// res.json(usuario);
-				// res.redirect('/api/usuarios');
 				res.json({ 
 					auth: true,
 					token: token
 				});				
 			} else {
 				res.status(400).json({
-					erros: "email ou senha incorretos"
+					erros: "e-mail ou senha incorretos"
 				});
 			}
 

@@ -12,7 +12,7 @@ const verificarJWT = (req, res, next) => {
 
 	jwt.verify(token, process.env.SECRET, (err, decoded) => {
 		if (err) return res.status(500).send({ auth: false, erros: 'Falha ao autenticar token' });
-		req.usuario = decoded.usuario;
+		req.usuarioAutenticado = decoded.usuario;
 		next();
 	});
 }
@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 router.get('/usuarios', verificarJWT, UsuariosController.index);
 router.get('/usuarios/:email', UsuariosController.show);
 router.delete('/usuarios/:email', UsuariosController.destroy);
-router.put('/usuarios/:email', UsuariosController.update);
+router.put('/usuarios/:email', verificarJWT, UsuariosController.update);
 router.post('/usuarios', UsuariosController.create);
 
 module.exports = router;

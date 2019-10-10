@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Usuarios = mongoose.model('Usuarios');
 
 module.exports = {
@@ -69,6 +68,10 @@ module.exports = {
 	},
 	async update(req, res){
 		try {
+
+			//caso o usuario autenticado tente aletar outro usuario
+			if (req.params.email != req.usuarioAutenticado.email) return res.status(400).json({erros: "falha na credencial"});
+
 			const usuario = await Usuarios.findOneAndUpdate({
 				email: req.params.email 
 			}, {
