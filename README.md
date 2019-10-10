@@ -1,4 +1,5 @@
-News app with authentication
-	- Express
-	- MongoDB
-	- React
+## Node API with authentication and authorization (JWT)
+
+- Express
+- Mongoose
+- React
