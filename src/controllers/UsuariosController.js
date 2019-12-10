@@ -10,11 +10,10 @@ module.exports = {
 
 			// const usuarios = await Usuarios.find().sort({ createdAt: -1});
 
-			//desestrutura a variavel page das queries strings e adiciona o default como 1
 			const { page = 1 } = req.query;
 			
 			const usuarios = await Usuarios.paginate({}, {
-				page, // short sintaxe para page: page, 
+				page,
 				limit: 10, 
 				sort: {
 					createdAt: -1

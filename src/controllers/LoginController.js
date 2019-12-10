@@ -17,7 +17,7 @@ module.exports = {
 
 				res.json({ 
 					auth: true,
-					token: token
+					token
 				});				
 			} else {
 				res.status(400).json({

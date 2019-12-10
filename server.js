@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
-const loginBD = require('./src/loginDb');
-// require("dotenv-safe").config({path: __dirname + '/.env'});
 require("dotenv-safe").config();
 
 //iniciando app
@@ -10,13 +8,14 @@ const app = express();
 app.use(express.json());
 
 //iniciando BD
-mongoose.connect(`mongodb+srv://${loginBD.usuario}:${loginBD.senha}@cluster-mongo-jglvg.mongodb.net/test?retryWrites=true&w=majority`, {
-	useNewUrlParser: true
+mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PWD}@cluster-mongo-jglvg.mongodb.net/test?retryWrites=true&w=majority`, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 }).then(() => {
 	console.log('MongoDB is on!');
 
 }).catch(err => {
-	console.log(`MongoDB: ${err}`);
+	console.warn(`error: ${err}`);
 });
 
 mongoose.set('useFindAndModify', true);
