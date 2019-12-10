@@ -10,7 +10,8 @@ const UsuariosSchema = new mongoose.Schema({
 		required: true
 	}, email: {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	}, senha: {
 		type: String,
 		required: true

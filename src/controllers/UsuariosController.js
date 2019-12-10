@@ -32,30 +32,10 @@ module.exports = {
 	async create(req, res){
 		try {
 
-			const errosCampos = []
-			if (req.body.nome == null || req.body.nome == '') {
-				errosCampos.push("Informar nome");
-			}
-			if (req.body.email == null || req.body.email == '') {
-				errosCampos.push("Informar e-mail");
-			}
-			if (req.body.senha == null || req.body.senha == '') {
-				errosCampos.push("Informar senha");
-			}
-
-			const emailExiste = await Usuarios.find({
-				email: req.body.email
-			});
-			if (emailExiste.length > 0) {
-				errosCampos.push("E-mail ja esta em uso");
-			}
-
-			if(errosCampos.length != 0){
-				return res.status(400).json({
-					erros: errosCampos
-				});
-			}
-
+			/* para garantir que os usuarios nao tenham acesso ao roles
+				assim, o model atribui o valor padrao de 1
+			*/
+			if(req.body.nivel) delete req.body.nivel
 			const novoUsuario = await Usuarios.create(req.body);
 
 			return res.json(novoUsuario);
@@ -69,7 +49,11 @@ module.exports = {
 		try {
 
 			//caso o usuario autenticado tente ver outro usuario
-			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email) return res.status(401).json({erros: "falha na credencial"});
+			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email){
+				return res.status(401).json({
+					erros: "falha nas credenciais"
+				});
+			}
 
 			const usuario = await Usuarios.find({
 				email: req.params.email
@@ -86,17 +70,24 @@ module.exports = {
 		try {
 
 			//caso o usuario autenticado tente aletar outro usuario
-			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email) return res.status(401).json({erros: "falha na credencial"});
+			if (req.usuarioAutenticado.nivel < 2 && req.params.email != req.usuarioAutenticado.email){
+				return res.status(401).json({
+					erros: "falha nas credenciais"
+				});
+			}
+
+			// garante que um user comum nao altere seu role
+			if (req.usuarioAutenticado.nivel < 2) req.body.nivel = 1
 
 			const usuario = await Usuarios.findOneAndUpdate({
-				email: req.params.email 
-			}, {
+				email: req.params.email },
+			{
 				nome: req.body.nome,
 				sobreNome: req.body.sobreNome,
 				email: req.body.email,
 				senha: req.body.senha,
-				nivel: req.body.nivel
-			}, {
+				nivel: req.body.nivel },
+			{
 				useFindAndModify: false,
 				new: true
 			});
