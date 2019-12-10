@@ -15,7 +15,7 @@ mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGOD
 	console.log('MongoDB is on!');
 
 }).catch(err => {
-	console.warn(`error: ${err}`);
+	console.warn('error:', err);
 });
 
 mongoose.set('useFindAndModify', true);
@@ -37,6 +37,6 @@ app.post('/login', LoginController.index);
 app.use('/api', require('./src/routes'));
 
 //porta
-app.listen(8000, () => {
+app.listen(process.env.PORT || 8000, () => {
 	console.log('Server is On (8000)!');
 });

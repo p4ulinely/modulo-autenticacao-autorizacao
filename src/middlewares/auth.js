@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require("dotenv-safe").config();
 
-//midlleware para verificar token
+//midlleware para verificar autenticacao
 const verificacao = (req, res, next) => {
 
 	const token = req.headers['authorization'] || req.headers['x-access-token'];

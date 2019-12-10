@@ -10,25 +10,16 @@ module.exports = {
 				senha: req.body.senha
 			});
 
-			if (usuario != null) {
-				const token = jwt.sign({ usuario }, process.env.SECRET, {
-					expiresIn: 600 //10 minutos
-				});
+			if (usuario === null) return res.json({ erros: "e-mail ou senha incorretos" });
 
-				res.json({ 
-					auth: true,
-					token
-				});				
-			} else {
-				res.status(400).json({
-					erros: "e-mail ou senha incorretos"
-				});
-			}
+			const token = jwt.sign({ usuario }, process.env.SECRET, {
+				expiresIn: 600 //10 minutos
+			});
+
+			return res.json({ auth: true, token });				
 
 		} catch(err) {
-			return res.status(400).json({
-				msg: err
-			});
+			return res.status(400).json({ msg: err });
 		}
 	}
 }
